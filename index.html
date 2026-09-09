@@ -122,35 +122,69 @@
       </nav>
 
       <!-- Controles físicos -->
-      <footer class="pokedex__controls">
+<footer class="pokedex__controls">
 
-        <div
-          class="dpad"
-          aria-hidden="true"
-        >
-          <span class="dpad__vertical"></span>
-          <span class="dpad__horizontal"></span>
-        </div>
+  <div
+    class="dpad"
+    aria-label="Cruceta de navegación"
+  >
 
-        <div class="action-buttons">
-          <button
-            class="action-button action-button--a"
-            type="button"
-            aria-label="Botón A"
-          >
-            A
-          </button>
+    <span class="dpad__vertical"></span>
+    <span class="dpad__horizontal"></span>
 
-          <button
-            class="action-button action-button--b"
-            type="button"
-            aria-label="Botón B"
-          >
-            B
-          </button>
-        </div>
+    <button
+      class="dpad__control dpad__control--up"
+      id="dpad-up"
+      type="button"
+      aria-label="Mover arriba"
+    ></button>
 
-      </footer>
+    <button
+      class="dpad__control dpad__control--left"
+      id="dpad-left"
+      type="button"
+      aria-label="Mover a la izquierda"
+    ></button>
+
+    <button
+      class="dpad__control dpad__control--right"
+      id="dpad-right"
+      type="button"
+      aria-label="Mover a la derecha"
+    ></button>
+
+    <button
+      class="dpad__control dpad__control--down"
+      id="dpad-down"
+      type="button"
+      aria-label="Mover abajo"
+    ></button>
+
+  </div>
+
+  <div class="action-buttons">
+
+    <button
+      class="action-button action-button--a"
+      id="button-a"
+      type="button"
+      aria-label="Confirmar"
+    >
+      A
+    </button>
+
+    <button
+      class="action-button action-button--b"
+      id="button-b"
+      type="button"
+      aria-label="Volver"
+    >
+      B
+    </button>
+
+  </div>
+
+</footer>
 
     </section>
   </main>

@@ -918,3 +918,15 @@
 
   outline-offset: 3px;
 }
+
+.screen-content button:focus-visible,
+.screen-content select:focus-visible,
+.screen-content input:focus-visible,
+.screen-content textarea:focus-visible {
+  outline: 3px solid #d72638;
+  outline-offset: 3px;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(255, 255, 255, 0.8);
+}
