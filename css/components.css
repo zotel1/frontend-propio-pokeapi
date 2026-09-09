@@ -849,3 +849,15 @@
     opacity: 1;
   }
 }
+
+.screen-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.45;
+
+  transform: none;
+
+  box-shadow:
+    0 2px 0
+    rgba(0, 0, 0, 0.35);
+}
