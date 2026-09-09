@@ -1,3 +1,7 @@
+import {
+  translatePokemonType
+} from '../utils/typeTranslations.js'
+
 const formatPokemonId = (id) => {
   return `#${String(id).padStart(3, '0')}`
 }
@@ -15,14 +19,19 @@ const createTypeChips = (types) => {
     .map(
       (type) => `
         <span class="type-chip type-chip--${type}">
-          ${type}
+          ${translatePokemonType(type)}
         </span>
       `
     )
     .join('')
 }
 
-export const createPokemonDisplay = (pokemon) => {
+export const createPokemonDisplay = (
+  pokemon,
+  {
+    showAddButton = true
+  } = {}
+) => {
   return `
     <section class="pokemon-display">
 
@@ -31,6 +40,10 @@ export const createPokemonDisplay = (pokemon) => {
           class="pokemon-display__image"
           src="${pokemon.image}"
           alt="${pokemon.name}"
+          onerror="
+            this.onerror=null;
+            this.src='./assets/images/pokemon-placeholder.svg';
+          "
         >
       </div>
 
@@ -70,13 +83,19 @@ export const createPokemonDisplay = (pokemon) => {
 
       </div>
 
-      <button
-        class="screen-button"
-        id="add-to-collection"
-        type="button"
-      >
-        + Agregar a colección
-      </button>
+      ${
+        showAddButton
+          ? `
+            <button
+              class="screen-button"
+              id="add-to-collection"
+              type="button"
+            >
+              + Agregar a colección
+            </button>
+          `
+          : ''
+      }
 
     </section>
   `

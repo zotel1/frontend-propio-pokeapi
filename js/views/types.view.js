@@ -4,6 +4,10 @@ import {
 } from '../api/pokemon.api.js'
 
 import {
+  translatePokemonType
+} from '../utils/typeTranslations.js'
+
+import {
   createPokemonCard
 } from '../components/pokemonCard.js'
 
@@ -51,7 +55,7 @@ const renderTypeSelector = (types) => {
                       : ''
                   }
                 >
-                  ${type}
+                  ${translatePokemonType(type)}
                 </option>
               `
             )
@@ -68,7 +72,7 @@ const renderTypeSelector = (types) => {
                     type-chip--${selectedType}
                   "
                 >
-                  ${selectedType}
+                  ${translatePokemonType(selectedType)}
                 </span>
               `
               : ''
