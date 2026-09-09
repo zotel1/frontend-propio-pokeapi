@@ -3,7 +3,8 @@ import {
 } from '../api/pokemon.api.js'
 
 import {
-  createPokemonDisplay
+  createPokemonDisplay,
+  bindPokemonDisplayEvents
 } from '../components/pokemonDisplay.js'
 
 import {
@@ -13,10 +14,19 @@ import {
 
 let initialPokemon = null
 
-export const renderHomeView = async (container) => {
+export const renderHomeView = async (
+  container,
+  onAddToCollection
+) => {
   if (initialPokemon) {
     container.innerHTML =
       createPokemonDisplay(initialPokemon)
+
+    bindPokemonDisplayEvents(
+      container,
+      initialPokemon,
+      onAddToCollection
+    )
 
     return
   }
@@ -25,10 +35,17 @@ export const renderHomeView = async (container) => {
     createLoading('Buscando Pokémon...')
 
   try {
-    initialPokemon = await getRandomPokemon()
+    initialPokemon =
+      await getRandomPokemon()
 
     container.innerHTML =
       createPokemonDisplay(initialPokemon)
+
+    bindPokemonDisplayEvents(
+      container,
+      initialPokemon,
+      onAddToCollection
+    )
   } catch (error) {
     container.innerHTML =
       createErrorFeedback(error.message)

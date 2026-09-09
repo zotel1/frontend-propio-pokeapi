@@ -74,11 +74,28 @@ export const createPokemonDisplay = (pokemon) => {
         class="screen-button"
         id="add-to-collection"
         type="button"
-        data-pokemon-id="${pokemon.id}"
       >
         + Agregar a colección
       </button>
 
     </section>
   `
+}
+
+export const bindPokemonDisplayEvents = (
+  container,
+  pokemon,
+  onAddToCollection
+) => {
+  const addButton =
+    container.querySelector(
+      '#add-to-collection'
+    )
+
+  addButton?.addEventListener(
+    'click',
+    () => {
+      onAddToCollection?.(pokemon)
+    }
+  )
 }

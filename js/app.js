@@ -1,20 +1,31 @@
 import {
   getBackendHealth,
-  getPokemonByName
+  getPokemonByName,
+  getPokemonById
 } from './api/pokemon.api.js'
+
+import {
+  createCollectionItem
+} from './api/collection.api.js'
 
 import {
   setBackendStatus
 } from './components/statusIndicator.js'
 
 import {
-  createPokemonDisplay
+  createPokemonDisplay,
+  bindPokemonDisplayEvents
 } from './components/pokemonDisplay.js'
 
 import {
   createLoading,
   createErrorFeedback
 } from './components/feedback.js'
+
+import {
+  createCollectionForm,
+  createCollectionSuccess
+} from './components/collectionForm.js'
 
 import {
   renderHomeView
@@ -77,6 +88,100 @@ const setActiveNavigation = (view) => {
   })
 }
 
+const renderPokemon = (
+  pokemon,
+  activeView = 'home'
+) => {
+  screenContent.innerHTML =
+    createPokemonDisplay(pokemon)
+
+  bindPokemonDisplayEvents(
+    screenContent,
+    pokemon,
+    handleAddToCollection
+  )
+
+  setActiveNavigation(activeView)
+}
+
+const handleAddToCollection = (pokemon) => {
+  screenContent.innerHTML =
+    createCollectionForm(pokemon)
+
+  const form =
+    screenContent.querySelector(
+      '#collection-form'
+    )
+
+  const cancelButton =
+    screenContent.querySelector(
+      '#collection-cancel'
+    )
+
+  cancelButton?.addEventListener(
+    'click',
+    () => {
+      renderPokemon(pokemon)
+    }
+  )
+
+  form?.addEventListener(
+    'submit',
+    async (event) => {
+      event.preventDefault()
+
+      const formData =
+        new FormData(form)
+
+      const nickname =
+        formData
+          .get('nickname')
+          ?.toString()
+          .trim() ?? ''
+
+      const notes =
+        formData
+          .get('notes')
+          ?.toString()
+          .trim() ?? ''
+
+      screenContent.innerHTML =
+        createLoading(
+          'Guardando en colección...'
+        )
+
+      try {
+        const item =
+          await createCollectionItem({
+            pokemonId: pokemon.id,
+            nickname,
+            notes
+          })
+
+        screenContent.innerHTML =
+          createCollectionSuccess(item)
+
+        const backButton =
+          screenContent.querySelector(
+            '#collection-success-back'
+          )
+
+        backButton?.addEventListener(
+          'click',
+          () => {
+            renderPokemon(pokemon)
+          }
+        )
+      } catch (error) {
+        screenContent.innerHTML =
+          createErrorFeedback(
+            error.message
+          )
+      }
+    }
+  )
+}
+
 const handleSearch = async (event) => {
   event.preventDefault()
 
@@ -98,11 +203,41 @@ const handleSearch = async (event) => {
     const pokemon =
       await getPokemonByName(name)
 
-    screenContent.innerHTML =
-      createPokemonDisplay(pokemon)
+    renderPokemon(
+      pokemon,
+      'home'
+    )
   } catch (error) {
     screenContent.innerHTML =
-      createErrorFeedback(error.message)
+      createErrorFeedback(
+        error.message
+      )
+  }
+}
+
+const handlePokemonSelect = async (
+  pokemonId
+) => {
+  screenContent.innerHTML =
+    createLoading(
+      'Cargando Pokémon...'
+    )
+
+  try {
+    const pokemon =
+      await getPokemonById(
+        pokemonId
+      )
+
+    renderPokemon(
+      pokemon,
+      'types'
+    )
+  } catch (error) {
+    screenContent.innerHTML =
+      createErrorFeedback(
+        error.message
+      )
   }
 }
 
@@ -112,7 +247,8 @@ const handleHomeNavigation = async () => {
   setActiveNavigation('home')
 
   await renderHomeView(
-    screenContent
+    screenContent,
+    handleAddToCollection
   )
 }
 
@@ -122,7 +258,8 @@ const handleTypesNavigation = async () => {
   setActiveNavigation('types')
 
   await renderTypesView(
-    screenContent
+    screenContent,
+    handlePokemonSelect
   )
 }
 
@@ -130,7 +267,8 @@ const initializeApp = async () => {
   checkBackendStatus()
 
   await renderHomeView(
-    screenContent
+    screenContent,
+    handleAddToCollection
   )
 
   searchForm.addEventListener(
