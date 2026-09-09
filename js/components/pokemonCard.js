@@ -1,3 +1,7 @@
+import {
+  translatePokemonType
+} from '../utils/typeTranslations.js'
+
 const formatPokemonId = (id) => {
   return `#${String(id).padStart(3, '0')}`
 }
@@ -7,7 +11,7 @@ const createTypeChips = (types) => {
     .map(
       (type) => `
         <span class="type-chip type-chip--${type}">
-          ${type}
+          ${translatePokemonType(type)}
         </span>
       `
     )
@@ -26,6 +30,10 @@ export const createPokemonCard = (pokemon) => {
         class="pokemon-card__image"
         src="${pokemon.image}"
         alt="${pokemon.name}"
+        onerror="
+          this.onerror=null;
+          this.src='./assets/images/pokemon-placeholder.svg';
+        "
       >
 
       <span class="pokemon-card__id">

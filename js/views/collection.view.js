@@ -6,8 +6,16 @@ import {
 } from '../api/collection.api.js'
 
 import {
+  getPokemonById
+} from '../api/pokemon.api.js'
+
+import {
   createCollectionCard
 } from '../components/collectionCard.js'
+
+import {
+  createPokemonDisplay
+} from '../components/pokemonDisplay.js'
 
 import {
   createLoading,
@@ -52,6 +60,7 @@ const createEditForm = (item) => {
         <form id="collection-edit-form">
 
           <div class="form-field">
+
             <label for="edit-nickname">
               Apodo
             </label>
@@ -63,9 +72,11 @@ const createEditForm = (item) => {
               maxlength="50"
               value="${item.nickname ?? ''}"
             >
+
           </div>
 
           <div class="form-field">
+
             <label for="edit-notes">
               Notas
             </label>
@@ -75,6 +86,7 @@ const createEditForm = (item) => {
               name="notes"
               maxlength="250"
             >${item.notes ?? ''}</textarea>
+
           </div>
 
           <div class="form-actions">
@@ -144,11 +156,64 @@ const createDeleteConfirmation = (item) => {
   `
 }
 
+const renderPokemonDetail = async (
+  container,
+  pokemonId
+) => {
+  container.innerHTML =
+    createLoading(
+      'Cargando Pokémon...'
+    )
+
+  try {
+    const pokemon =
+      await getPokemonById(pokemonId)
+
+    container.innerHTML = `
+      ${createPokemonDisplay(
+        pokemon,
+        {
+          showAddButton: false
+        }
+      )}
+
+      <button
+        class="screen-button screen-button--secondary"
+        id="collection-detail-back"
+        type="button"
+      >
+        ← Volver a colección
+      </button>
+    `
+
+    const backButton =
+      container.querySelector(
+        '#collection-detail-back'
+      )
+
+    backButton?.addEventListener(
+      'click',
+      async () => {
+        await renderCollectionView(
+          container
+        )
+      }
+    )
+  } catch (error) {
+    container.innerHTML =
+      createErrorFeedback(
+        error.message
+      )
+  }
+}
+
 const renderCollectionList = (
   container,
-  collection
+  collectionWithPokemon
 ) => {
-  if (collection.length === 0) {
+  if (
+    collectionWithPokemon.length === 0
+  ) {
     container.innerHTML =
       createEmptyCollection()
 
@@ -163,9 +228,17 @@ const renderCollectionList = (
       </h2>
 
       <div class="pokemon-grid">
-        ${collection
-          .map(createCollectionCard)
+
+        ${collectionWithPokemon
+          .map(
+            ({ item, pokemon }) =>
+              createCollectionCard(
+                item,
+                pokemon
+              )
+          )
           .join('')}
+
       </div>
 
     </section>
@@ -175,6 +248,11 @@ const renderCollectionList = (
 const bindCollectionEvents = (
   container
 ) => {
+  const viewButtons =
+    container.querySelectorAll(
+      '[data-action="view"]'
+    )
+
   const editButtons =
     container.querySelectorAll(
       '[data-action="edit"]'
@@ -184,6 +262,23 @@ const bindCollectionEvents = (
     container.querySelectorAll(
       '[data-action="delete"]'
     )
+
+  viewButtons.forEach((button) => {
+    button.addEventListener(
+      'click',
+      async () => {
+        const pokemonId =
+          Number(
+            button.dataset.pokemonId
+          )
+
+        await renderPokemonDetail(
+          container,
+          pokemonId
+        )
+      }
+    )
+  })
 
   editButtons.forEach((button) => {
     button.addEventListener(
@@ -381,12 +476,38 @@ export const renderCollectionView = async (
     const collection =
       await getCollection()
 
+    if (collection.length === 0) {
+      container.innerHTML =
+        createEmptyCollection()
+
+      return
+    }
+
+    const collectionWithPokemon =
+      await Promise.all(
+        collection.map(
+          async (item) => {
+            const pokemon =
+              await getPokemonById(
+                item.pokemonId
+              )
+
+            return {
+              item,
+              pokemon
+            }
+          }
+        )
+      )
+
     renderCollectionList(
       container,
-      collection
+      collectionWithPokemon
     )
 
-    bindCollectionEvents(container)
+    bindCollectionEvents(
+      container
+    )
   } catch (error) {
     container.innerHTML =
       createErrorFeedback(

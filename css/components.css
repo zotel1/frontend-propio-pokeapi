@@ -870,3 +870,51 @@
     0 2px 0
     rgba(0, 0, 0, 0.35);
 }
+
+.collection-card__preview {
+  width: 100%;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: inherit;
+  font: inherit;
+
+  cursor: pointer;
+}
+
+.collection-card__image {
+  display: block;
+
+  width: 110px;
+  height: 110px;
+
+  margin: 0 auto 8px;
+
+  object-fit: contain;
+}
+
+.collection-card__preview:hover
+.collection-card__image {
+  transform: scale(1.05);
+}
+
+.collection-card__image {
+  transition: transform 0.2s ease;
+}
+
+.collection-card__notes {
+  margin: 6px 0 10px;
+
+  font-size: 0.8rem;
+
+  opacity: 0.8;
+}
+
+.collection-card__preview:focus-visible {
+  outline: 3px solid
+    rgba(215, 38, 56, 0.35);
+
+  outline-offset: 3px;
+}
