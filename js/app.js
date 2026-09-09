@@ -5,6 +5,10 @@ import {
 } from './api/pokemon.api.js'
 
 import {
+  renderCollectionView
+} from './views/collection.view.js'
+
+import {
   createCollectionItem
 } from './api/collection.api.js'
 
@@ -53,7 +57,21 @@ const navHome =
 const navTypes =
   document.querySelector('#nav-types')
 
-const checkBackendStatus = async () => {
+
+const navCollection =
+  document.querySelector('#nav-collection')
+
+const handleCollectionNavigation = async () => {
+  searchInput.value = ''
+
+  setActiveNavigation('collection')
+
+  await renderCollectionView(
+    screenContent
+  )
+}
+
+  const checkBackendStatus = async () => {
   setBackendStatus(
     backendStatus,
     'checking'
@@ -285,6 +303,11 @@ const initializeApp = async () => {
     'click',
     handleTypesNavigation
   )
+
+  navCollection.addEventListener(
+  'click',
+  handleCollectionNavigation
+)
 }
 
 initializeApp()
