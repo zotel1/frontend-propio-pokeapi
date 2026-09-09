@@ -95,9 +95,30 @@ const renderTypeSelector = (types) => {
   `
 }
 
+const bindPokemonCards = (
+  container,
+  onPokemonSelect
+) => {
+  const cards =
+    container.querySelectorAll('.pokemon-card')
+
+  cards.forEach((card) => {
+    card.addEventListener(
+      'click',
+      () => {
+        const pokemonId =
+          Number(card.dataset.pokemonId)
+
+        onPokemonSelect?.(pokemonId)
+      }
+    )
+  })
+}
+
 const renderPokemonResults = (
   container,
-  response
+  response,
+  onPokemonSelect
 ) => {
   const {
     results,
@@ -107,6 +128,7 @@ const renderPokemonResults = (
   if (results.length === 0) {
     container.innerHTML = `
       <section class="feedback">
+
         <div class="feedback__icon">
           ?
         </div>
@@ -118,6 +140,7 @@ const renderPokemonResults = (
         <p class="feedback__message">
           No se encontraron Pokémon para este tipo.
         </p>
+
       </section>
     `
 
@@ -133,12 +156,18 @@ const renderPokemonResults = (
 
     ${createPagination(pagination)}
   `
+
+  bindPokemonCards(
+    container,
+    onPokemonSelect
+  )
 }
 
 const loadPokemonByType = async (
   container,
   type,
-  offset
+  offset,
+  onPokemonSelect
 ) => {
   container.innerHTML =
     createLoading(
@@ -155,17 +184,24 @@ const loadPokemonByType = async (
 
     renderPokemonResults(
       container,
-      response
+      response,
+      onPokemonSelect
     )
 
-    bindPaginationEvents(container)
+    bindPaginationEvents(
+      container,
+      onPokemonSelect
+    )
   } catch (error) {
     container.innerHTML =
       createErrorFeedback(error.message)
   }
 }
 
-const bindPaginationEvents = (container) => {
+const bindPaginationEvents = (
+  container,
+  onPokemonSelect
+) => {
   const previousButton =
     container.querySelector(
       '#pagination-previous'
@@ -188,7 +224,8 @@ const bindPaginationEvents = (container) => {
       await loadPokemonByType(
         container,
         selectedType,
-        currentOffset
+        currentOffset,
+        onPokemonSelect
       )
     }
   )
@@ -201,14 +238,16 @@ const bindPaginationEvents = (container) => {
       await loadPokemonByType(
         container,
         selectedType,
-        currentOffset
+        currentOffset,
+        onPokemonSelect
       )
     }
   )
 }
 
 export const renderTypesView = async (
-  container
+  container,
+  onPokemonSelect
 ) => {
   container.innerHTML =
     createLoading(
@@ -238,7 +277,8 @@ export const renderTypesView = async (
       await loadPokemonByType(
         resultsContainer,
         selectedType,
-        currentOffset
+        currentOffset,
+        onPokemonSelect
       )
     }
 
@@ -263,7 +303,8 @@ export const renderTypesView = async (
         await loadPokemonByType(
           resultsContainer,
           selectedType,
-          currentOffset
+          currentOffset,
+          onPokemonSelect
         )
       }
     )

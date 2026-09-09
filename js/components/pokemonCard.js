@@ -16,9 +16,11 @@ const createTypeChips = (types) => {
 
 export const createPokemonCard = (pokemon) => {
   return `
-    <article
+    <button
       class="pokemon-card"
+      type="button"
       data-pokemon-id="${pokemon.id}"
+      aria-label="Ver detalles de ${pokemon.name}"
     >
       <img
         class="pokemon-card__image"
@@ -37,6 +39,6 @@ export const createPokemonCard = (pokemon) => {
       <div class="pokemon-display__types">
         ${createTypeChips(pokemon.types)}
       </div>
-    </article>
+    </button>
   `
 }
