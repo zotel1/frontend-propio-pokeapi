@@ -658,14 +658,14 @@ const bindPhysicalControls = () => {
   dpadUp?.addEventListener(
     'click',
     () => {
-      moveFocus(-1)
+      moveFocus(1)
     }
   )
 
   dpadDown?.addEventListener(
     'click',
     () => {
-      moveFocus(1)
+      moveFocus(-1)
     }
   )
 
