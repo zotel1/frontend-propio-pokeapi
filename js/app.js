@@ -20,6 +20,10 @@ import {
   renderHomeView
 } from './views/home.view.js'
 
+import {
+  renderTypesView
+} from './views/types.view.js'
+
 const screenContent =
   document.querySelector('#screen-content')
 
@@ -34,6 +38,9 @@ const searchInput =
 
 const navHome =
   document.querySelector('#nav-home')
+
+const navTypes =
+  document.querySelector('#nav-types')
 
 const checkBackendStatus = async () => {
   setBackendStatus(
@@ -56,6 +63,20 @@ const checkBackendStatus = async () => {
   }
 }
 
+const setActiveNavigation = (view) => {
+  const buttons =
+    document.querySelectorAll(
+      '.nav-button'
+    )
+
+  buttons.forEach((button) => {
+    button.classList.toggle(
+      'nav-button--active',
+      button.dataset.view === view
+    )
+  })
+}
+
 const handleSearch = async (event) => {
   event.preventDefault()
 
@@ -66,8 +87,12 @@ const handleSearch = async (event) => {
     return
   }
 
+  setActiveNavigation('home')
+
   screenContent.innerHTML =
-    createLoading(`Buscando ${name}...`)
+    createLoading(
+      `Buscando ${name}...`
+    )
 
   try {
     const pokemon =
@@ -84,27 +109,29 @@ const handleSearch = async (event) => {
 const handleHomeNavigation = async () => {
   searchInput.value = ''
 
-  await renderHomeView(screenContent)
-
   setActiveNavigation('home')
+
+  await renderHomeView(
+    screenContent
+  )
 }
 
-const setActiveNavigation = (view) => {
-  const buttons =
-    document.querySelectorAll('.nav-button')
+const handleTypesNavigation = async () => {
+  searchInput.value = ''
 
-  buttons.forEach((button) => {
-    button.classList.toggle(
-      'nav-button--active',
-      button.dataset.view === view
-    )
-  })
+  setActiveNavigation('types')
+
+  await renderTypesView(
+    screenContent
+  )
 }
 
 const initializeApp = async () => {
   checkBackendStatus()
 
-  await renderHomeView(screenContent)
+  await renderHomeView(
+    screenContent
+  )
 
   searchForm.addEventListener(
     'submit',
@@ -114,6 +141,11 @@ const initializeApp = async () => {
   navHome.addEventListener(
     'click',
     handleHomeNavigation
+  )
+
+  navTypes.addEventListener(
+    'click',
+    handleTypesNavigation
   )
 }
 
