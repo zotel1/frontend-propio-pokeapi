@@ -1,0 +1,177 @@
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 768px) {
+  .app {
+    padding:
+      20px 12px;
+  }
+
+  .pokedex {
+    width:
+      min(100%, 410px);
+  }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 480px) {
+  body {
+    background:
+      var(--pokedex-red-dark);
+  }
+
+  .app {
+    min-height:
+      100dvh;
+
+    display: block;
+
+    padding: 0;
+  }
+
+  .pokedex {
+    width: 100%;
+
+    min-height:
+      100dvh;
+
+    border: 0;
+
+    border-radius: 0;
+
+    box-shadow:
+      none;
+  }
+
+  .pokedex__header {
+    padding:
+      14px 14px 11px;
+  }
+
+  .status-light--main {
+    width: 44px;
+    height: 44px;
+  }
+
+  .pokedex__branding {
+    justify-content:
+      space-between;
+  }
+
+  .pokedex__branding h1 {
+    font-size: 0.88rem;
+  }
+
+  .pokedex__logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pokedex__screen {
+    margin:
+      12px;
+
+    min-height:
+      0;
+
+    height:
+      calc(100dvh - 300px);
+
+    padding: 10px;
+
+    border-width: 7px;
+  }
+
+  .pokedex__navigation {
+    padding:
+      0 12px 12px;
+
+    gap: 6px;
+  }
+
+  .nav-button {
+    min-height: 36px;
+
+    font-size: 0.72rem;
+  }
+
+  .pokedex__controls {
+    min-height: 105px;
+
+    padding:
+      5px 26px 17px;
+  }
+
+  .dpad {
+    width: 76px;
+    height: 76px;
+  }
+
+  .dpad__vertical {
+    width: 27px;
+    height: 76px;
+  }
+
+  .dpad__horizontal {
+    width: 76px;
+    height: 27px;
+  }
+
+  .action-buttons {
+    width: 82px;
+    height: 76px;
+  }
+
+  .action-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .pokemon-display__image-wrapper {
+    width: 160px;
+    height: 160px;
+  }
+
+  .pokemon-display__image {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+
+/* =========================
+   MOBILE PEQUEÑO
+========================= */
+
+@media (max-width: 350px) {
+  .pokedex__branding h1 {
+    font-size: 0.76rem;
+  }
+
+  .pokedex__logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-button {
+    font-size: 0.65rem;
+  }
+
+  .pokemon-grid {
+    gap: 7px;
+  }
+
+  .pokemon-card {
+    padding: 7px;
+  }
+
+  .pokemon-card__image {
+    width: 72px;
+    height: 72px;
+  }
+}
