@@ -30,6 +30,7 @@
   overflow: hidden;
 }
 
+
 /* =========================
    CABECERA
 ========================= */
@@ -153,6 +154,7 @@
     rgba(0, 0, 0, 0.3);
 }
 
+
 /* =========================
    PANTALLA
 ========================= */
@@ -196,6 +198,7 @@
 
   scrollbar-width: thin;
 }
+
 
 /* =========================
    NAVEGACIÓN
@@ -242,6 +245,8 @@
   font-size: 0.78rem;
   font-weight: 700;
 
+  cursor: pointer;
+
   transition:
     transform var(--transition),
     background var(--transition),
@@ -276,6 +281,7 @@
     );
 }
 
+
 /* =========================
    CONTROLES INFERIORES
 ========================= */
@@ -295,13 +301,18 @@
     rgba(116, 10, 28, 0.45);
 }
 
-/* Cruceta */
+
+/* =========================
+   CRUCETA
+========================= */
 
 .dpad {
   width: 86px;
   height: 86px;
 
   position: relative;
+
+  flex-shrink: 0;
 }
 
 .dpad__vertical,
@@ -309,6 +320,8 @@
   position: absolute;
 
   display: block;
+
+  pointer-events: none;
 
   background:
     linear-gradient(
@@ -350,13 +363,116 @@
     translateY(-50%);
 }
 
-/* Botones A y B */
+
+/* Zonas interactivas de la cruceta */
+
+.dpad__control {
+  position: absolute;
+
+  z-index: 3;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dpad__control--up {
+  top: 0;
+  left: 33.33%;
+
+  width: 33.33%;
+  height: 33.33%;
+}
+
+.dpad__control--down {
+  bottom: 0;
+  left: 33.33%;
+
+  width: 33.33%;
+  height: 33.33%;
+}
+
+.dpad__control--left {
+  top: 33.33%;
+  left: 0;
+
+  width: 33.33%;
+  height: 33.33%;
+}
+
+.dpad__control--right {
+  top: 33.33%;
+  right: 0;
+
+  width: 33.33%;
+  height: 33.33%;
+}
+
+.dpad__control:focus-visible {
+  outline:
+    2px solid
+    rgba(255, 255, 255, 0.75);
+
+  outline-offset: 1px;
+}
+
+
+/* Feedback físico al presionar */
+
+.dpad:has(
+  .dpad__control--up:active
+)
+.dpad__vertical {
+  transform:
+    translateX(-50%)
+    translateY(2px);
+}
+
+.dpad:has(
+  .dpad__control--down:active
+)
+.dpad__vertical {
+  transform:
+    translateX(-50%)
+    translateY(2px);
+}
+
+.dpad:has(
+  .dpad__control--left:active
+)
+.dpad__horizontal {
+  transform:
+    translateY(-50%)
+    translateY(2px);
+}
+
+.dpad:has(
+  .dpad__control--right:active
+)
+.dpad__horizontal {
+  transform:
+    translateY(-50%)
+    translateY(2px);
+}
+
+
+/* =========================
+   BOTONES A Y B
+========================= */
 
 .action-buttons {
   width: 92px;
   height: 86px;
 
   position: relative;
+
+  flex-shrink: 0;
 }
 
 .action-button {
@@ -386,9 +502,26 @@
 
   font-weight: 800;
 
+  cursor: pointer;
+
   transition:
     transform var(--transition),
-    box-shadow var(--transition);
+    box-shadow var(--transition),
+    filter var(--transition);
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.action-button:hover {
+  filter: brightness(1.15);
+}
+
+.action-button:focus-visible {
+  outline:
+    2px solid
+    rgba(255, 255, 255, 0.8);
+
+  outline-offset: 3px;
 }
 
 .action-button:active {
